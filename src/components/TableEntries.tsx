@@ -19,6 +19,7 @@ const TableEntries = ({ entries }: { entries: TimeEntry[] }) => {
           <TableRow>
             <TableCell>Time</TableCell>
             <TableCell></TableCell>
+            <TableCell>Date</TableCell>
             <TableCell>Duration</TableCell>
             <TableCell>Activity</TableCell>
             <TableCell>User</TableCell>
@@ -30,10 +31,8 @@ const TableEntries = ({ entries }: { entries: TimeEntry[] }) => {
           {entries.map((entry) => (
             <TableRow key={entry.id}>
               <TableCell>{formatTime(entry.duration.startedAt)}</TableCell>
-              <TableCell>
-                {formatTime(entry.duration.stoppedAt)}{" "}
-                <span>{formatShortDate(entry.duration.startedAt)}</span>
-              </TableCell>
+              <TableCell>{formatTime(entry.duration.stoppedAt)}</TableCell>
+              <TableCell>{formatShortDate(entry.duration.startedAt)}</TableCell>
               <TableCell>
                 {calculateDuration(
                   entry.duration.startedAt,
