@@ -8,3 +8,10 @@ export const formatTime = (isoString: string) => {
     hour12: false,
   });
 };
+
+export const formatSecondstoHour = (totalSeconds: number) => {
+  const hours = Math.floor(totalSeconds / 3600);
+  const minutes = Math.floor((totalSeconds % 3600) / 60);
+
+  return `${hours}h ${minutes}m`;
+};

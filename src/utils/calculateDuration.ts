@@ -19,3 +19,18 @@ export const calculateDuration = (
     seconds,
   ).padStart(2, "0")}`;
 };
+
+export const calculateSeconds = (
+  startedAt: string,
+  stoppedAt: string,
+): number => {
+  const start = new Date(startedAt).getTime();
+  const end = new Date(stoppedAt).getTime();
+
+  const diffMs = end - start;
+
+  if (diffMs <= 0) return 0;
+
+  const totalSeconds = Math.floor(diffMs / 1000);
+  return totalSeconds;
+};
