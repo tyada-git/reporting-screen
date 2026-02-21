@@ -23,13 +23,20 @@ const ProjectBarChart = ({ entries }: { entries: TimeEntry[] }) => {
     name,
     hours: value / 3600,
   }));
+  const categoryGapRatio = barData.length <= 2 ? 0.8 : 0.3;
   return (
     <>
       <Typography variant="h6" fontWeight={700}>
         Time
       </Typography>
       <BarChart
-        xAxis={[{ scaleType: "band", data: barData.map((d) => d.name) }]}
+        xAxis={[
+          {
+            scaleType: "band",
+            data: barData.map((d) => d.name),
+            categoryGapRatio,
+          },
+        ]}
         series={[
           {
             data: barData.map((d) => d.hours),
