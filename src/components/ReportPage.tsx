@@ -12,8 +12,8 @@ import UserFilter from "./Filters/UserFilter";
 import NoDataPage from "./NoDataPage";
 import ProjectBarChart from "./Charts/ProjectBarChart";
 
-const API_KEY = import.meta.env.SIGN_IN_API_KEY;
-const API_SECRET = import.meta.env.SIGN_IN_API_SECRET;
+const API_KEY = import.meta.env.VITE_SIGN_IN_API_KEY;
+const API_SECRET = import.meta.env.VITE_SIGN_IN_API_SECRET;
 
 const ReportPage = () => {
   const [tokenReady, setTokenReady] = useState(false);
