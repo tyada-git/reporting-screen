@@ -1,56 +1,3 @@
-// import {
-//   Table,
-//   TableBody,
-//   TableCell,
-//   TableContainer,
-//   TableHead,
-//   TableRow,
-// } from "@mui/material";
-// import type { TimeEntry } from "../types/report.type";
-// import { formatTime } from "../utils/formatTime";
-// import { formatShortDate } from "../utils/formatShortDate";
-// import { calculateDuration } from "../utils/calculateDuration";
-
-// const TableEntries = ({ entries }: { entries: TimeEntry[] }) => {
-//   return (
-//     <TableContainer>
-//       <Table>
-//         <TableHead>
-//           <TableRow>
-//             <TableCell>Time</TableCell>
-//             <TableCell></TableCell>
-//             <TableCell>Date</TableCell>
-//             <TableCell>Duration</TableCell>
-//             <TableCell>Activity</TableCell>
-//             <TableCell>User</TableCell>
-//             <TableCell>Note</TableCell>
-//           </TableRow>
-//         </TableHead>
-
-//         <TableBody>
-//           {entries.map((entry) => (
-//             <TableRow key={entry.id}>
-//               <TableCell>{formatTime(entry.duration.startedAt)}</TableCell>
-//               <TableCell>{formatTime(entry.duration.stoppedAt)}</TableCell>
-//               <TableCell>{formatShortDate(entry.duration.startedAt)}</TableCell>
-//               <TableCell>
-//                 {calculateDuration(
-//                   entry.duration.startedAt,
-//                   entry.duration.stoppedAt,
-//                 )}
-//               </TableCell>
-//               <TableCell>{entry.activity.name}</TableCell>
-//               <TableCell>{entry.user.email}</TableCell>
-//               <TableCell>{entry.note?.text}</TableCell>
-//             </TableRow>
-//           ))}
-//         </TableBody>
-//       </Table>
-//     </TableContainer>
-//   );
-// };
-
-// export default TableEntries;
 import { useState } from "react";
 import {
   Table,
@@ -85,13 +32,13 @@ const TableEntries = ({ entries }: { entries: TimeEntry[] }) => {
       <Table>
         <TableHead>
           <TableRow>
-            <TableCell>Time</TableCell>
+            <TableCell sx={{ fontWeight: 700 }}>Time</TableCell>
             <TableCell></TableCell>
-            <TableCell>Date</TableCell>
-            <TableCell>Duration</TableCell>
-            <TableCell>Activity</TableCell>
-            <TableCell>User</TableCell>
-            <TableCell>Note</TableCell>
+            <TableCell sx={{ fontWeight: 700 }}>Date</TableCell>
+            <TableCell sx={{ fontWeight: 700 }}>Duration</TableCell>
+            <TableCell sx={{ fontWeight: 700 }}>Activity</TableCell>
+            <TableCell sx={{ fontWeight: 700 }}>User</TableCell>
+            <TableCell sx={{ fontWeight: 700 }}>Note</TableCell>
           </TableRow>
         </TableHead>
 
@@ -102,12 +49,44 @@ const TableEntries = ({ entries }: { entries: TimeEntry[] }) => {
               <TableCell>{formatTime(entry.duration.stoppedAt)}</TableCell>
               <TableCell>{formatShortDate(entry.duration.startedAt)}</TableCell>
               <TableCell>
-                {calculateDuration(
-                  entry.duration.startedAt,
-                  entry.duration.stoppedAt,
-                )}
+                {(() => {
+                  const duration = calculateDuration(
+                    entry.duration.startedAt,
+                    entry.duration.stoppedAt,
+                  );
+
+                  const [hours, minutes, seconds] = duration.split(":");
+
+                  return (
+                    <>
+                      <span style={{ fontWeight: 800 }}>
+                        {hours}:{minutes}
+                      </span>
+                      :{seconds}
+                    </>
+                  );
+                })()}
               </TableCell>
-              <TableCell>{entry.activity.name}</TableCell>
+              <TableCell>
+                <span
+                  style={{
+                    display: "inline-flex",
+                    alignItems: "center",
+                    gap: "8px",
+                  }}
+                >
+                  <span
+                    style={{
+                      width: 9,
+                      height: 9,
+                      borderRadius: "50%",
+                      backgroundColor: entry.activity.color,
+                      display: "inline-block",
+                    }}
+                  />
+                  {entry.activity.name}
+                </span>
+              </TableCell>
               <TableCell>{entry.user.email}</TableCell>
               <TableCell>{entry.note?.text ?? ""}</TableCell>
             </TableRow>
