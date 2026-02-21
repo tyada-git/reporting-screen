@@ -8,6 +8,9 @@ import type { Dayjs } from "dayjs";
 import dayjs from "dayjs";
 import ActivityFilter from "./Filters/ActivityFilter";
 import ActivityPieChart from "./Charts/ActivityPieChart";
+import UserFilter from "./Filters/UserFilter";
+import NoDataPage from "./NoDataPage";
+import ProjectBarChart from "./Charts/ProjectBarChart";
 
 const API_KEY = "MzkwMTM1X2M5Y2IxNjBmMWJlZDRhN2FhYTQ3ZWZkMzdkMjg5Nzk0";
 const API_SECRET = "MzIxYzVlOWM1YTU3NDExY2I0ZThiOWMxYzk2ZmEzMmE";
@@ -17,6 +20,7 @@ const ReportPage = () => {
   const [startDate, setStartDate] = useState<Dayjs | null>(dayjs("2026-01-01"));
   const [endDate, setEndDate] = useState<Dayjs | null>(dayjs());
   const [selectedActivities, setSelectedActivities] = useState<string[]>([]);
+  const [selectedUsers, setSelectedUsers] = useState<string[]>([]);
   const [signIn, { isLoading: authLoading, error: authError }] =
     useSignInMutation();
 
@@ -56,17 +60,137 @@ const ReportPage = () => {
       return acc;
     }, []) ?? [];
 
+  const allUsers =
+    data?.timeEntries.reduce<string[]>((acc, d) => {
+      if (!acc.includes(d.user.email)) acc.push(d.user.email);
+      return acc;
+    }, []) ?? [];
+
+  useEffect(() => {
+    if (!data?.timeEntries) return;
+
+    if (selectedUsers.length === 0 && allUsers.length > 0) {
+      setSelectedUsers(allUsers);
+    }
+    if (selectedActivities.length === 0 && allActivities.length > 0) {
+      setSelectedActivities(allActivities);
+    }
+    // only run when data changes (not on every selection)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [data?.timeEntries]);
+
   const filteredEntries = useMemo(() => {
     const entries = data?.timeEntries ?? [];
 
-    if (selectedActivities.length === 0) {
-      return entries;
-    }
+    if (selectedUsers.length === 0) return [];
+    if (selectedActivities.length === 0) return [];
 
-    return entries.filter((entry) =>
-      selectedActivities.includes(entry.activity.name),
+    return entries.filter(
+      (e) =>
+        selectedUsers.includes(e.user.email) &&
+        selectedActivities.includes(e.activity.name),
     );
-  }, [data?.timeEntries, selectedActivities]);
+  }, [data?.timeEntries, selectedUsers, selectedActivities]);
+
+  // Since our API is oly  giving 1 foldername - my activity I tried ti check with mock how bar chart looks
+  // const timeEntries = [
+  //   {
+  //     id: "1",
+  //     activity: {
+  //       id: "dev",
+  //       name: "Development 💻",
+  //       color: "#8855ff",
+  //       folderId: "1",
+  //     },
+  //     user: {
+  //       id: "390135",
+  //       name: "",
+  //       email: "mz+fetesttask@timeular.com",
+  //     },
+  //     folder: {
+  //       id: "1",
+  //       name: "Client Project A",
+  //     },
+  //     duration: {
+  //       startedAt: "2026-01-01T06:00:00.000",
+  //       stoppedAt: "2026-01-01T09:00:00.000",
+  //     },
+  //     note: { tags: [], mentions: [] },
+  //     timezone: "Z",
+  //   },
+  //   {
+  //     id: "3",
+  //     activity: {
+  //       id: "design",
+  //       name: "Design 🎨",
+  //       color: "#aa44bb",
+  //       folderId: "3",
+  //     },
+  //     user: {
+  //       id: "390135",
+  //       name: "",
+  //       email: "mz+fetesttask@timeular.com",
+  //     },
+  //     folder: {
+  //       id: "3",
+  //       name: "Website Redesign",
+  //     },
+  //     duration: {
+  //       startedAt: "2026-01-01T10:30:00.000",
+  //       stoppedAt: "2026-01-01T12:00:00.000",
+  //     },
+  //     note: { tags: [], mentions: [] },
+  //     timezone: "Z",
+  //   },
+  //   {
+  //     id: "4",
+  //     activity: {
+  //       id: "dev",
+  //       name: "Development 💻",
+  //       color: "#8855ff",
+  //       folderId: "4",
+  //     },
+  //     user: {
+  //       id: "390135",
+  //       name: "",
+  //       email: "mz+fetesttask@timeular.com",
+  //     },
+  //     folder: {
+  //       id: "4",
+  //       name: "Mobile App",
+  //     },
+  //     duration: {
+  //       startedAt: "2026-01-02T06:30:00.000",
+  //       stoppedAt: "2026-01-02T09:30:00.000",
+  //     },
+  //     note: { tags: [], mentions: [] },
+  //     timezone: "Z",
+  //   },
+  //   {
+  //     id: "6",
+  //     activity: {
+  //       id: "research",
+  //       name: "Research 🔍",
+  //       color: "#33aa88",
+  //       folderId: "5",
+  //     },
+  //     user: {
+  //       id: "390135",
+  //       name: "",
+  //       email: "mz+fetesttask@timeular.com",
+  //     },
+  //     folder: {
+  //       id: "5",
+  //       name: "Innovation Lab",
+  //     },
+  //     duration: {
+  //       startedAt: "2026-01-03T07:00:00.000",
+  //       stoppedAt: "2026-01-03T10:00:00.000",
+  //     },
+  //     note: { tags: [], mentions: [] },
+  //     timezone: "Z",
+  //   },
+  // ];
 
   return (
     <Box
@@ -93,7 +217,16 @@ const ReportPage = () => {
             alignItems={{ xs: "stretch", sm: "center" }}
             justifyContent="space-between"
           >
-            <Stack direction="row" spacing={2} flexWrap="wrap">
+            <Stack
+              direction={{ xs: "column", sm: "row" }}
+              spacing={2}
+              rowGap={2}
+              flexWrap="wrap"
+              sx={{
+                width: "100%",
+                "& > *": { flex: "1 1 220px" },
+              }}
+            >
               {authLoading && <Typography>Signing in...</Typography>}
               {authError && <Typography>Auth error</Typography>}
 
@@ -110,8 +243,6 @@ const ReportPage = () => {
                       "&.Mui-focused": {
                         boxShadow: "0 0 0 4px rgb(180, 255, 127)",
                       },
-
-                      // optional: keep border consistent
                       "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
                         borderColor: "#0B5C2D",
                       },
@@ -131,8 +262,6 @@ const ReportPage = () => {
                       "&.Mui-focused": {
                         boxShadow: "0 0 0 4px rgb(180, 255, 127)",
                       },
-
-                      // optional: keep border consistent
                       "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
                         borderColor: "#0B5C2D",
                       },
@@ -145,12 +274,19 @@ const ReportPage = () => {
                 selectedActivities={selectedActivities}
                 onChange={setSelectedActivities}
               />
+              <UserFilter
+                allUsers={allUsers}
+                selectedUsers={selectedUsers}
+                onChange={setSelectedUsers}
+              />
             </Stack>
           </Stack>
         </Paper>
 
         {reportLoading ? (
           <Typography>Loading report...</Typography>
+        ) : filteredEntries.length === 0 ? (
+          <NoDataPage />
         ) : (
           <Box>
             <Paper
@@ -163,9 +299,23 @@ const ReportPage = () => {
                 mb: 2,
               }}
             >
-              <Stack>
+              <Box>
                 <ActivityPieChart entries={filteredEntries} />
-              </Stack>
+              </Box>
+            </Paper>
+            <Paper
+              elevation={0}
+              sx={{
+                border: "1px solid",
+                borderColor: "divider",
+                borderRadius: 2,
+                p: 2,
+                mb: 2,
+              }}
+            >
+              <Box>
+                <ProjectBarChart entries={filteredEntries} />
+              </Box>
             </Paper>
             <Paper
               elevation={0}

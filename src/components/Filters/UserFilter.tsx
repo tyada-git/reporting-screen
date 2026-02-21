@@ -10,20 +10,20 @@ import CheckBoxOutlineBlankIcon from "@mui/icons-material/CheckBoxOutlineBlank";
 import CheckBoxIcon from "@mui/icons-material/CheckBox";
 
 interface ActivityFilterProps {
-  allActivities: string[];
-  selectedActivities: string[];
+  allUsers: string[];
+  selectedUsers: string[];
   onChange: (selected: string[]) => void;
 }
 
-const ActivityFilter = ({
-  allActivities,
-  selectedActivities,
+const UserFilter = ({
+  allUsers,
+  selectedUsers,
   onChange,
 }: ActivityFilterProps) => {
   const CustomPaper = (props: PaperProps) => {
     const { children, ...other } = props;
     const handleSelectAll = () => {
-      onChange(allActivities);
+      onChange(allUsers);
     };
 
     return (
@@ -41,7 +41,7 @@ const ActivityFilter = ({
           <Button
             size="small"
             variant={
-              selectedActivities.length === allActivities.length
+              selectedUsers.length === allUsers.length
                 ? "contained"
                 : "outlined"
             }
@@ -60,9 +60,9 @@ const ActivityFilter = ({
   return (
     <Autocomplete
       multiple
-      id="activity-multiple"
-      options={allActivities}
-      value={selectedActivities}
+      id="users-multiple"
+      options={allUsers}
+      value={selectedUsers}
       onChange={(event, value) => onChange(value)}
       disableCloseOnSelect
       getOptionLabel={(option) => option}
@@ -96,19 +96,15 @@ const ActivityFilter = ({
       }}
       style={{ width: 300 }}
       renderValue={(selected) => {
-        if (selected.length === 0) return null;
-
-        if (selected.length === allActivities.length) {
-          return "All";
-        }
-
-        return `${selected.length} Activities`;
+        if (selected.length === 0) return "None";
+        if (selected.length === allUsers.length) return "All";
+        return `${selected.length} Users`;
       }}
       renderInput={(params) => (
         <TextField
           {...params}
-          label="Activities"
-          placeholder="search activities"
+          label="Users"
+          placeholder="search users"
           sx={{
             "& .MuiInputLabel-root": {
               fontWeight: 800,
@@ -133,4 +129,4 @@ const ActivityFilter = ({
     />
   );
 };
-export default ActivityFilter;
+export default UserFilter;

@@ -11,11 +11,12 @@ interface ActivityData {
 }
 
 const settings = {
-  margin: { left: 2 },
+  margin: { top: 10, bottom: 10, left: 10, right: 10 },
   width: 300,
   height: 300,
-  hideLegend: true,
+  hideLegend: true, // we are building custom legend
 };
+
 const ActivityPieChart = ({ entries }: { entries: TimeEntry[] }) => {
   const grouped = entries.reduce<Record<string, ActivityData>>((acc, entry) => {
     const duration = calculateSeconds(
@@ -34,91 +35,124 @@ const ActivityPieChart = ({ entries }: { entries: TimeEntry[] }) => {
     }
 
     acc[key].value += duration;
-
     return acc;
   }, {});
 
   const result = Object.values(grouped);
-  console.log(result);
-  console.log(grouped);
   const totalSeconds = result.reduce((sum, item) => sum + item.value, 0);
+
   return (
     <Box>
-      <Typography variant="h6" fontWeight={700}>
+      <Typography variant="h6" fontWeight={700} sx={{ mb: 1 }}>
         Summary
       </Typography>
-      <Box width={300} height={300} display="grid">
-        <PieChart
-          series={[
-            {
-              id: "outer",
-              innerRadius: 80,
-              outerRadius: 110,
-              data: result,
 
-              highlightScope: { fade: "global", highlight: "item" },
-              valueFormatter: (item) => formatSecondstoHour(item.value),
-            },
-          ]}
-          {...settings}
-          sx={{
-            [`.${pieArcClasses.root}`]: {
-              opacity: 1,
-              transition: "opacity 200ms ease",
-            },
-            [`.${pieArcClasses.faded}`]: {
-              opacity: 0.2,
-            },
-            [`.${pieArcClasses.highlighted}`]: {
-              opacity: 1,
-            },
-            gridArea: "1 / 1",
-          }}
-        />
+      <Box
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          gap: 2,
+          flexWrap: { xs: "wrap", sm: "nowrap" },
+        }}
+      >
+        <Box sx={{ width: 300, height: 300, display: "grid" }}>
+          <PieChart
+            series={[
+              {
+                id: "outer",
+                innerRadius: 80,
+                outerRadius: 110,
+                data: result,
+                highlightScope: { fade: "global", highlight: "item" },
+                faded: { additionalRadius: -10 },
+                valueFormatter: (item) => formatSecondstoHour(item.value),
+              },
+            ]}
+            {...settings}
+            sx={{
+              gridArea: "1 / 1",
+              [`.${pieArcClasses.root}`]: {
+                opacity: 1,
+                transition: "opacity 200ms ease",
+              },
+              [`.${pieArcClasses.faded}`]: {
+                opacity: 0.2,
+              },
+              [`.${pieArcClasses.highlighted}`]: {
+                opacity: 1,
+              },
+            }}
+          />
 
+          <Box
+            sx={{
+              gridArea: "1 / 1",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              pointerEvents: "none",
+            }}
+          >
+            <Typography variant="h6" fontWeight={700}>
+              {formatSecondstoHour(totalSeconds)}
+            </Typography>
+          </Box>
+        </Box>
+
+        {/* // created this legend as thelegend of pie chart was causing issue while placing the center text */}
         <Box
           sx={{
-            gridArea: "1 / 1",
             display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            pointerEvents: "none",
+            flexDirection: "column",
+            gap: 1,
+            minWidth: 200,
+            width: { xs: "100%", sm: "auto" },
           }}
         >
-          <Typography variant="h6" fontWeight={700}>
-            {formatSecondstoHour(totalSeconds)}
-          </Typography>
+          {result.map((r) => (
+            <Box
+              key={r.label}
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+                gap: 1,
+              }}
+            >
+              <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+                <Box
+                  sx={{
+                    width: 10,
+                    height: 10,
+                    borderRadius: "50%",
+                    backgroundColor: r.color,
+                    flexShrink: 0,
+                  }}
+                />
+                <Typography variant="body2" sx={{ whiteSpace: "nowrap" }}>
+                  {r.label}
+                </Typography>
+              </Box>
+
+              <Box
+                component="span"
+                sx={{
+                  backgroundColor: r.color,
+                  color: "#fff",
+                  px: 1,
+                  py: 0.25,
+                  borderRadius: 1,
+                  fontSize: 12,
+                  fontWeight: 700,
+                  whiteSpace: "nowrap",
+                }}
+              >
+                {formatSecondstoHour(r.value)}
+              </Box>
+            </Box>
+          ))}
         </Box>
       </Box>
-
-      {/* <Box position="relative" width={300} height={300}>
-        <PieChart
-          series={[
-            {
-              innerRadius: 80,
-              outerRadius: 110,
-              data: result,
-              // arcLabel: (item) => formatSecondstoHour(item.value),
-              valueFormatter: (item) => formatSecondstoHour(item.value),
-            },
-          ]}
-          {...settings}
-        />
-        <Box
-          position="absolute"
-          top="50%"
-          left="50%"
-          sx={{
-            transform: "translate(-50%, -50%)",
-            textAlign: "center",
-            pointerEvents: "none",
-          }}
-        >
-          <Typography variant="h6" fontWeight={700}>
-            {formatSecondstoHour(totalSeconds)}
-          </Typography>
-        </Box>
-      </Box> */}
     </Box>
   );
 };

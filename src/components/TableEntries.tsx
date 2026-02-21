@@ -40,7 +40,7 @@ const TableEntries = ({ entries }: { entries: TimeEntry[] }) => {
                 )}
               </TableCell>
               <TableCell>{entry.activity.name}</TableCell>
-              <TableCell>{entry.user.name}</TableCell>
+              <TableCell>{entry.user.email}</TableCell>
               <TableCell>{entry.note?.text}</TableCell>
             </TableRow>
           ))}
