@@ -65,6 +65,6 @@ _(Note: The Vite dev server is configured with `vite-plugin-mkcert` to proxy req
 
 ```
 ## Few screenshots from project
-![alt text](image-1.png)
+<img width="1575" height="543" alt="image" src="https://github.com/user-attachments/assets/f9ab3d71-cf76-493b-8c10-b46682cb7927" />
 
 ```
