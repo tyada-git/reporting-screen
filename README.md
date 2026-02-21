@@ -68,5 +68,8 @@ _(Note: The Vite dev server is configured with `vite-plugin-mkcert` to proxy req
 
 <img width="1575" height="543" alt="image" src="https://github.com/user-attachments/assets/fba91b8a-bf83-48cd-a460-0b10a383e710" />
 
+<img width="1214" height="664" alt="image" src="https://github.com/user-attachments/assets/392c1c75-8083-4115-b0aa-b7c852293490" />
+
+
 
 
