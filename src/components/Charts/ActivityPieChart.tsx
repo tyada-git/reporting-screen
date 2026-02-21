@@ -51,6 +51,7 @@ const ActivityPieChart = ({ entries }: { entries: TimeEntry[] }) => {
         sx={{
           display: "flex",
           alignItems: "center",
+          justifyContent: "center",
           gap: 2,
           flexWrap: { xs: "wrap", sm: "nowrap" },
         }}
