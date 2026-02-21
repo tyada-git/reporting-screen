@@ -63,8 +63,10 @@ _(Note: The Vite dev server is configured with `vite-plugin-mkcert` to proxy req
 2. **Unit Testing:** I would add `Jest` and `React Testing Library` to write unit tests.
 3. **Mobile Responsiveness for Tables:** While the prompt requested a desktop-only version, I would eventually convert the paginated HTML table into a responsive card-based layout for seamless reading on mobile devices.
 
-```
-## Few screenshots from project
-![alt text](image-1.png)
 
-```
+## Few screenshots from Project
+
+<img width="1575" height="543" alt="image" src="https://github.com/user-attachments/assets/fba91b8a-bf83-48cd-a460-0b10a383e710" />
+
+
+
