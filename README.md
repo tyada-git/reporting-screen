@@ -24,20 +24,19 @@ npm install
 
 To securely connect to the API, you must provide the required API credentials.
 
-1. Create a file named `.env` in the root directory of the project (next to `package.json`).
-2. Add your API Key and Secret to the `.env` file
+1. In the root directory of the project (next to `package.json`), you will find a file named `.env.example`.
+2. Duplicate this file and rename the copy to `.env`.
+3. Open the new `.env` file and replace the placeholder values with the API Key and Secret provided in the assignment instructions:
 
 ```env
-SIGN_IN_API_KEY
-SIGN_IN_API_SECRET
-
+VITE_SIGN_IN_API_KEY=insert_api_key_here
+VITE_SIGN_IN_API_SECRET=insert_api_secret_here
 ```
 
 ### 3. Start the Development Server
 
 ```bash
 npm run dev
-
 ```
 
 The application will be available at `http://localhost:5173`.
