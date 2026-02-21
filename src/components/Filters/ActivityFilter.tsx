@@ -8,6 +8,7 @@ import {
 } from "@mui/material";
 import CheckBoxOutlineBlankIcon from "@mui/icons-material/CheckBoxOutlineBlank";
 import CheckBoxIcon from "@mui/icons-material/CheckBox";
+import { VirtualizedListbox } from "./VirtualizedListbox";
 
 interface ActivityFilterProps {
   allActivities: string[];
@@ -81,6 +82,7 @@ const ActivityFilter = ({
               alignItems: "center",
               justifyContent: "space-between",
               width: "100%",
+              padding: "8px 12px",
             }}
           >
             <span>{option}</span>
@@ -88,6 +90,7 @@ const ActivityFilter = ({
             <SelectionIcon
               fontSize="small"
               sx={{
+                flexShrink: 0,
                 color: selected ? "#0B5C2D" : "rgba(0,0,0,0.35)",
               }}
             />
@@ -129,6 +132,7 @@ const ActivityFilter = ({
       )}
       slots={{
         paper: CustomPaper,
+        listbox: VirtualizedListbox,
       }}
     />
   );
