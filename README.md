@@ -47,13 +47,16 @@ _(Note: The Vite dev server is configured with `vite-plugin-mkcert` to proxy req
 
 ## Assumptions & Technical Decisions
 
-- **Filter State Logic :** I designed the filter logic to mirror the exact behavior of the production Early app. By default, if the user hasn't interacted with a filter, it acts as "All Selected". If the user explicitly deselects all items in the dropdown, the app actively filters for an empty array, resulting in the correct "No Data" UI state.
-- **Performance (Pagination & Virtualization):**
+- **UI Library Choice (Material UI):** I chose MUI for this time-boxed assignment because it allows for rapid prototyping without sacrificing a clean, professional, and accessible design. Since the task required complex inputs (Date Pickers), tables, and charts, leveraging the MUI ecosystem (including `@mui/x-date-pickers` and `@mui/x-charts`) ensured visual consistency and saved valuable development time that I could redirect toward complex filter logic and performance optimizations.
+
+* **Filter State Logic :** I designed the filter logic to mirror the exact behavior of the production Early app. By default, if the user hasn't interacted with a filter, it acts as "All Selected". If the user explicitly deselects all items in the dropdown, the app actively filters for an empty array, resulting in the correct "No Data" UI state.
+
+* **Performance (Pagination & Virtualization):**
   1.To handle potentially large datasets (e.g., querying a full year of time entries), I implemented pagination on the main data table
   2.Used `react-window` (V2) to virtualize the long filter dropdown lists for Activity Filter, ensuring the DOM remains lightweight and responsive.
-- **Responsive Layout:** As per the requirements, the dashboard focuses on a clean desktop experience.
-- **Charts:**Created Pie Chart( Activity vs hours) and Bar Chart( project vs hour)- here I have also placed a mock in ReportPgae.tsx named timeEntries considering real API data has only one project name as My Activities.
-- **Charts:** - Considering the real data that I am fetching has name field empty in case of user so I have used email to diplay in table as well as filter.
+* **Responsive Layout:** As per the requirements, the dashboard focuses on a clean desktop experience.
+* **Charts:**Created Pie Chart( Activity vs hours) and Bar Chart( project vs hour)- here I have also placed a mock in ReportPgae.tsx named timeEntries considering real API data has only one project name as My Activities.
+* **Charts:** - Considering the real data that I am fetching has name field empty in case of user so I have used email to diplay in table as well as filter.
 
 ---
 
@@ -63,13 +66,8 @@ _(Note: The Vite dev server is configured with `vite-plugin-mkcert` to proxy req
 2. **Unit Testing:** I would add `Jest` and `React Testing Library` to write unit tests.
 3. **Mobile Responsiveness for Tables:** While the prompt requested a desktop-only version, I would eventually convert the paginated HTML table into a responsive card-based layout for seamless reading on mobile devices.
 
-
 ## Few screenshots from Project
 
 <img width="1575" height="543" alt="image" src="https://github.com/user-attachments/assets/fba91b8a-bf83-48cd-a460-0b10a383e710" />
 
 <img width="1214" height="664" alt="image" src="https://github.com/user-attachments/assets/392c1c75-8083-4115-b0aa-b7c852293490" />
-
-
-
-
