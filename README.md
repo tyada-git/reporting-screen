@@ -66,5 +66,6 @@ _(Note: The Vite dev server is configured with `vite-plugin-mkcert` to proxy req
 3. **Mobile Responsiveness for Tables:** Enhance it further for mobile as well.
 
 ## Few screenshots from Project
+<img width="1597" height="553" alt="image" src="https://github.com/user-attachments/assets/3523c21b-23a5-4c80-b0c5-952662152c19" />
 
 <img width="1214" height="664" alt="image" src="https://github.com/user-attachments/assets/392c1c75-8083-4115-b0aa-b7c852293490" />
