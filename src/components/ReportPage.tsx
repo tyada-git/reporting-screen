@@ -12,15 +12,18 @@ import UserFilter from "./Filters/UserFilter";
 import NoDataPage from "./NoDataPage";
 import ProjectBarChart from "./Charts/ProjectBarChart";
 
-const API_KEY = "MzkwMTM1X2M5Y2IxNjBmMWJlZDRhN2FhYTQ3ZWZkMzdkMjg5Nzk0";
-const API_SECRET = "MzIxYzVlOWM1YTU3NDExY2I0ZThiOWMxYzk2ZmEzMmE";
+const API_KEY = import.meta.env.SIGN_IN_API_KEY;
+const API_SECRET = import.meta.env.SIGN_IN_API_SECRET;
 
 const ReportPage = () => {
   const [tokenReady, setTokenReady] = useState(false);
   const [startDate, setStartDate] = useState<Dayjs | null>(dayjs("2026-01-01"));
   const [endDate, setEndDate] = useState<Dayjs | null>(dayjs());
-  const [selectedActivities, setSelectedActivities] = useState<string[]>([]);
-  const [selectedUsers, setSelectedUsers] = useState<string[]>([]);
+  const [selectedUsers, setSelectedUsers] = useState<string[] | null>(null);
+  const [selectedActivities, setSelectedActivities] = useState<string[] | null>(
+    null,
+  );
+
   const [signIn, { isLoading: authLoading, error: authError }] =
     useSignInMutation();
 
@@ -65,32 +68,21 @@ const ReportPage = () => {
       if (!acc.includes(d.user.email)) acc.push(d.user.email);
       return acc;
     }, []) ?? [];
-
-  useEffect(() => {
-    if (!data?.timeEntries) return;
-
-    if (selectedUsers.length === 0 && allUsers.length > 0) {
-      setSelectedUsers(allUsers);
-    }
-    if (selectedActivities.length === 0 && allActivities.length > 0) {
-      setSelectedActivities(allActivities);
-    }
-    // only run when data changes (not on every selection)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [data?.timeEntries]);
+  const activeUsers = selectedUsers ?? allUsers;
+  const activeActivities = selectedActivities ?? allActivities;
 
   const filteredEntries = useMemo(() => {
     const entries = data?.timeEntries ?? [];
 
-    if (selectedUsers.length === 0) return [];
-    if (selectedActivities.length === 0) return [];
+    if (activeUsers.length === 0) return [];
+    if (activeActivities.length === 0) return [];
 
     return entries.filter(
       (e) =>
-        selectedUsers.includes(e.user.email) &&
-        selectedActivities.includes(e.activity.name),
+        activeUsers.includes(e.user.email) &&
+        activeActivities.includes(e.activity.name),
     );
-  }, [data?.timeEntries, selectedUsers, selectedActivities]);
+  }, [data?.timeEntries, activeUsers, activeActivities]);
 
   // Since our API is oly  giving 1 foldername - my activity I tried ti check with mock how bar chart looks
   // const timeEntries = [
@@ -269,15 +261,16 @@ const ReportPage = () => {
                   },
                 }}
               />
+
               <ActivityFilter
                 allActivities={allActivities}
-                selectedActivities={selectedActivities}
+                selectedActivities={activeActivities}
                 onChange={setSelectedActivities}
               />
               <UserFilter
+                selectedUsers={activeUsers}
+                onChange={(newValue) => setSelectedUsers(newValue)}
                 allUsers={allUsers}
-                selectedUsers={selectedUsers}
-                onChange={setSelectedUsers}
               />
             </Stack>
           </Stack>

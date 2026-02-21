@@ -1,54 +1,70 @@
-# React + TypeScript + Vite
+# Reporting Screen
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Tech Stack
 
-Currently, two official plugins are available:
+- **Core:** React 18, TypeScript, Vite
+- **State Management & Data Fetching:** Redux Toolkit (RTK Query)
+- **UI Framework:** Material UI (MUI)
+- **Performance Optimizations:** `react-window` (virtualized dropdown lists), MUI Table Pagination
+- **Charting:** MUI X Charts (`@mui/x-charts`)
+- **Date Handling:** Day.js
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## How to Run the Project Locally
 
-## Expanding the ESLint configuration
+### 1. Clone the repository and install dependencies
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+```bash
+git clone
+cd reporting-screen
+npm install
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+### 2. Configure Environment Variables
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+To securely connect to the API, you must provide the required API credentials.
 
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
+1. Create a file named `.env` in the root directory of the project (next to `package.json`).
+2. Add your API Key and Secret to the `.env` file
+
+```env
+SIGN_IN_API_KEY
+SIGN_IN_API_SECRET
+
+```
+
+### 3. Start the Development Server
+
+```bash
+npm run dev
+
+```
+
+The application will be available at `http://localhost:5173`.
+_(Note: The Vite dev server is configured with `vite-plugin-mkcert` to proxy requests and handle CORS)._
+
+---
+
+## Assumptions & Technical Decisions
+
+- **Filter State Logic :** I designed the filter logic to mirror the exact behavior of the production Early app. By default, if the user hasn't interacted with a filter, it acts as "All Selected". If the user explicitly deselects all items in the dropdown, the app actively filters for an empty array, resulting in the correct "No Data" UI state.
+- **Performance (Pagination & Virtualization):**
+  1.To handle potentially large datasets (e.g., querying a full year of time entries), I implemented pagination on the main data table
+  2.Used `react-window` (V2) to virtualize the long filter dropdown lists for Activity Filter, ensuring the DOM remains lightweight and responsive.
+- **Responsive Layout:** As per the requirements, the dashboard focuses on a clean desktop experience.
+- **Charts:**Created Pie Chart( Activity vs hours) and Bar Chart( project vs hour)- here I have also placed a mock in ReportPgae.tsx named timeEntries considering real API data has only one project name as My Activities.
+- **Charts:** - Considering the real data that I am fetching has name field empty in case of user so I have used email to diplay in table as well as filter.
+
+---
+
+## What I Would Do With More Time
+
+1. **Global Error Handling:** I would replace the current inline typography error states (e.g., failed to fetch) with more polished user experience.
+2. **Unit Testing:** I would add `Jest` and `React Testing Library` to write unit tests.
+3. **Mobile Responsiveness for Tables:** While the prompt requested a desktop-only version, I would eventually convert the paginated HTML table into a responsive card-based layout for seamless reading on mobile devices.
+
+```
+## Few screenshots from project
+![alt text](image-1.png)
+
 ```

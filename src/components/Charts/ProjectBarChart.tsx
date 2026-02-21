@@ -7,7 +7,7 @@ const ProjectBarChart = ({ entries }: { entries: TimeEntry[] }) => {
   const folderMap: Record<string, number> = {};
 
   entries.forEach((entry) => {
-    const folderName = entry.folder.name;
+    const folderName = entry.folder?.name || "No Project";
     const duration = calculateSeconds(
       entry.duration.startedAt,
       entry.duration.stoppedAt,
