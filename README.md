@@ -55,8 +55,8 @@ _(Note: The Vite dev server is configured with `vite-plugin-mkcert` to proxy req
   1.To handle potentially large datasets (e.g., querying a full year of time entries), I implemented pagination on the main data table
   2.Used `react-window` (V2) to virtualize the long filter dropdown lists for Activity Filter, ensuring the DOM remains lightweight and responsive.
 * **Responsive Layout:** As per the requirements, the dashboard focuses on a clean desktop experience.
-* **Charts:**Created Pie Chart( Activity vs hours) and Bar Chart( project vs hour)- here I have also placed a mock in ReportPgae.tsx named timeEntries considering real API data has only one project name as My Activities.
-* **Charts:** - Considering the real data that I am fetching has name field empty in case of user so I have used email to diplay in table as well as filter.
+* **Charts:** Created Pie Chart( Activity vs hours) and Bar Chart( project vs hour)- here I have also placed a mock in ReportPage.tsx named timeEntries, considering real API data has only one project name as My Activities.
+* **Table** - Considering the real data that I am fetching has name field empty in case of user so I have used email to display in the table as well as filter.
 
 ---
 
