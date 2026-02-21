@@ -1,4 +1,4 @@
-import { AppBar, Toolbar, Typography } from "@mui/material";
+import { AppBar, Toolbar, Typography, Box } from "@mui/material";
 
 const Header = () => {
   return (
@@ -6,12 +6,23 @@ const Header = () => {
       position="static"
       elevation={0}
       sx={{
-        backgroundColor: "#20854a",
+        backgroundColor: "#0B5C2D",
         borderBottom: "1px solid",
         borderColor: "divider",
       }}
     >
       <Toolbar>
+        <Box
+          component="img"
+          src="/early.png"
+          alt="Early App Logo"
+          sx={{
+            height: 32,
+            width: "auto",
+            mr: 2,
+          }}
+        />
+
         <Typography
           variant="h6"
           component="div"
@@ -21,7 +32,7 @@ const Header = () => {
             letterSpacing: 0.5,
           }}
         >
-          EARLY (Timeular)
+          Early
         </Typography>
       </Toolbar>
     </AppBar>
